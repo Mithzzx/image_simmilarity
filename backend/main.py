@@ -25,22 +25,20 @@ app = FastAPI(
     title="Image Similarity API",
     description="Upload two images to get a similarity score, a visual heatmap (Grad-CAM), and an AI-generated explanation."
 )
+load_dotenv()
+
+# Configure CORS using environment variable ALLOWED_ORIGINS (comma-separated)
+raw_allowed = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://localhost:3000,https://*.vercel.app")
+allowed_origins = [o.strip() for o in raw_allowed.split(",") if o.strip()]
 
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "https://*.vercel.app",  # Allow all Vercel deployments
-        "*"  # Allow all origins (for demo purposes)
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-load_dotenv()
 
 base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 gradcam_model = base_model
