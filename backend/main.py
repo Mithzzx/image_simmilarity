@@ -5,6 +5,11 @@ import shutil
 import base64
 from PIL import Image
 from dotenv import load_dotenv
+import ssl
+import certifi
+
+# Fix SSL certificate verification issue
+ssl._create_default_https_context = ssl._create_unverified_context
 
 import tensorflow as tf
 from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input  # type: ignore

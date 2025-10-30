@@ -54,8 +54,9 @@ function App() {
     formData.append('file2', image2);
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
       const response = await axios.post<ComparisonResult>(
-        'http://127.0.0.1:8000/compare/',
+        `${API_URL}/compare/`,
         formData,
         {
           headers: {
